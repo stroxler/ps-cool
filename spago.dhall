@@ -15,6 +15,8 @@ to generate this file without the comments in this block.
   [ "console"
   , "effect"
   , "prelude"
+  , "lists"
+  , "tuples"
   -- monadic parser combinator + the standard recursion scheme library for purs
   , "parsing"
   , "matryoshka"
