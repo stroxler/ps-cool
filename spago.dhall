@@ -12,17 +12,23 @@ to generate this file without the comments in this block.
 -}
 { name = "my-project"
 , dependencies =
-  [ "console"
-  , "effect"
-  , "prelude"
-  , "lists"
-  , "tuples"
-  -- monadic parser combinator + the standard recursion scheme library for purs
-  , "parsing"
-  , "matryoshka"
-  -- more goodies
-  , "psci-support"
+  [ "arrays"
+  , "console"
+  , "control"
   , "dodo-printer"
+  , "effect"
+  , "either"
+  , "foldable-traversable"
+  , "identity"
+  , "lists"
+  , "matryoshka"
+  , "maybe"
+  , "parsing"
+  , "prelude"
+  , "psci-support"
+  , "strings"
+  , "tuples"
+  , "unicode"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]

@@ -1,0 +1,28 @@
+
+-- AtomDecl (Symbol "A")
+type A 
+
+{-
+
+TermDef
+  (Symbol "idA")
+  (TyFunction (TyAtom (Symbol "A")) (TyAtom (Symbol "A")))
+  (TmAbstraction [Symbol "x"] (TmVariable (Symbol "x")))
+
+ -}
+idA : A -> A
+idA = \x. x
+
+{-
+
+TermDef
+  (Symbol "apply")
+  (TyFunction
+    (TyFunction (TyAtom (Symbol "A")) (TyAtom (Symbol "B")))
+    (TyFunction (TyAtom (Symbol "A")) (TyAtom (Symbol "B"))))
+  (TmAbstraction
+    [Symbol "f", Symbol "a"]
+    Application (Variable "f") (Variable "a"))
+ -}
+apply : (A -> B) -> A -> B
+apply = \f a. f a
