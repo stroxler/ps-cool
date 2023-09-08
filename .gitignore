@@ -1,1 +1,4 @@
 output/*
+.spago
+.psc-ide-port
+.psci_modules
