@@ -23,6 +23,7 @@ to generate this file without the comments in this block.
   , "lists"
   , "matryoshka"
   , "maybe"
+  , "nonempty"
   , "parsing"
   , "prelude"
   , "psci-support"

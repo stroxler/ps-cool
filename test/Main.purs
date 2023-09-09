@@ -42,6 +42,24 @@ main = do
     ["x"
     , "xYz"
     , "X"]
+  {- Note: the space after the . is optional unless the next
+     symbol is an operator. But to avoid surprises on `.\` code (which
+     will be parsed as one symbol if there's no space) it's a good
+     idea to *always* put a blank space. -}
   traverseTestCases (Parser.parseAbstraction Parser.parseTerm)
-    [ "\\x.x"
+    [ "\\x. x"
+    , "\\x y. x"
+    , "\\x. \\y. y"
+    ]
+  {- For convenience it was easier not to write a stand-alone
+     parseApplication, so we just use parseTerm. -}
+  traverseTestCases Parser.parseTerm
+    [ "f a"
+    , "f \\g x. g x"
+    ]
+  traverseTestCases Parser.parseTerm
+    [ "(x)"
+    , "f a"
+    , "(f a) b"
+    , "f a b"
     ]
