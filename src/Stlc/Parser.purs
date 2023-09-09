@@ -99,32 +99,20 @@ parseWrapped termParser = lexer.parens termParser
      implementation where we just parse a term for the LHS will blow the stack,
      since it will call back into itself.
    - we want it to be left-associative (this is where the problem above
-     originates). The most obvious way to solve the problem above is to force
+     originates). One obvious way to solve the problem above is to force
      the LHS to be a simple term, but that makes it right-associative.
    
-   The solution here is to abandon the simple recursive-descent monadic
-   parsing style at the term top-level and instead parse a top-level term
-   as a leading simple term plus possibly a tail of additional terms.
+   The solution is to parse an entire sequence of simple terms in one shot,
+   and construct the left-associative applications via a left-fold.
 
-   We then manually construct the left-associative application sequence
-   if there are multiple terms, or return the single simpleTerm if not.
+   (Note that you could do the same thing via a right-fold for right
+   associative operations, although in that case you can also just use
+   recursive descent which is the more idiomatic way to do it).
    -}
 parseTermFixable :: Parser Term -> Parser Term
 parseTermFixable t = do
-  term0 <- parseSimpleTerm
-  parseApplication term0 <|> pure term0
+  NonEmptyArray.foldl1 TmApplication <$> NonEmptyArray.some parseSimpleTerm
   where
-    parseApplication :: Term -> Parser Term
-    parseApplication term0 = do
-      makeApplication term0 <$> NonEmptyArray.some parseSimpleTerm
-    makeApplication :: Term -> (NonEmptyArray Term) -> Term
-    makeApplication term0 arguments =
-      case NonEmptyArray.fromArray maybeMoreTerms of
-        Just moreTerms -> makeApplication thisApplication moreTerms
-        _ -> thisApplication
-      where
-        (NonEmpty.NonEmpty term1 maybeMoreTerms) = NonEmptyArray.toNonEmpty arguments
-        thisApplication = TmApplication term0 term1
     parseSimpleTerm :: Parser Term
     parseSimpleTerm =
       parseVariable <|>
